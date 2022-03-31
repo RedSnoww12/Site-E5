@@ -10,10 +10,21 @@ $action = $_REQUEST['action'];
 include("vues/v_entete.php") ;
 switch($action)
 {
-case 'accueil':
-// vue qui crée le contenu de la page d’accueil
-include("vues/v_accueille.php");
-break;
+    case 'accueil':
+        // vue qui crée le contenu de la page d’accueil
+        include("vues/v_accueuil.php");
+        break;
+    case 'inscription':
+        // vue qui crée le contenu de la page d’accueil
+        include("vues/v_inscription.php");
+        break;
+    case 'cours':
+        // vue qui crée le contenu de la page d’accueil
+        include("vues/v_cours.php");
+        break;
+    default:
+        include("vues/v_accueuil.php");
+        break;
 }
 // vue qui crée le pied de page
 include("vues/v_pied.php") ;
