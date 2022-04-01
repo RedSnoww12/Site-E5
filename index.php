@@ -1,4 +1,8 @@
 <?php
+require_once("./model./PdoMusic.php");
+
+$monPdo = PdoMusic::getPdoMusic();
+
 if(!isset($_REQUEST['action']))
 {
 $action = 'accueil';
@@ -20,7 +24,11 @@ switch($action)
         break;
     case 'cours':
         // vue qui crée le contenu de la page d’accueil
+        $lesCours= $monPdo->getLesCours();
+        //var_dump($lesCours);
         include("vues/v_cours.php");
+
+        
         break;
     default:
         include("vues/v_accueuil.php");
