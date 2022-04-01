@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+    body {background-color:#1F2739;
+      color:#A7A1AE;}
     body,h1 {font-family: "Raleway", Arial, sans-serif}
     h1 {letter-spacing: 6px}
     .w3-row-padding img {margin-bottom: 12px}

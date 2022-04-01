@@ -10,9 +10,8 @@
  * $monPdoMusic qui contiendra l'unique instance de la classe
  
  * @package default
- * @author Salim
+ * @author Sacha
  * @version    1.0
- * @link       http://www.php.net/manual/fr/book.pdo.php
  */
 
 class PdoMusic{   		
@@ -70,23 +69,23 @@ class PdoMusic{
 
 		try {
 		
-		$cours = array();
+			$cours = array();
 
-		$req = "Select person.nom, instrument.nom, jourDate, nbPlace from cours
-		INNER JOIN professeur ON cours.idProf = professeur.id
-		INNER JOIN person ON professeur.id = person.id
-		INNER JOIN instrument ON cours.idInstrument = instrument.id;";
+			$req = "Select person.nom, instrument.nom, jourDate, nbPlace from cours
+			INNER JOIN professeur ON cours.idProf = professeur.id
+			INNER JOIN person ON professeur.id = person.id
+			INNER JOIN instrument ON cours.idInstrument = instrument.id;";
 
-		//$monPdoMusic = PdoMusic::getPdoMusic();
+			//$monPdoMusic = PdoMusic::getPdoMusic();
 
-		//$rs = $monPdoMusic::getMonPdo()->prepare($req) ;
+			//$rs = $monPdoMusic::getMonPdo()->prepare($req) ;
 
-		$rs = self::$monPdo->prepare($req) ;
+			$rs = self::$monPdo->prepare($req) ;
 
-		$rs->execute() ;
+			$rs->execute() ;
 
-		$cours = $rs->fetchAll();
-		return $cours;
+			$cours = $rs->fetchAll();
+			return $cours;
 
 		} 
 		catch (PDOException $e) {
