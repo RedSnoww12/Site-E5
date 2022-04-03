@@ -71,7 +71,7 @@ class PdoMusic{
 		
 			$cours = array();
 
-			$req = "Select person.nom, instrument.nom, jourDate, nbPlace from cours
+			$req = "Select person.nom, instrument.nom, jourDate, nbPlace, cours.id from cours
 			INNER JOIN professeur ON cours.idProf = professeur.id
 			INNER JOIN person ON professeur.id = person.id
 			INNER JOIN instrument ON cours.idInstrument = instrument.id;";

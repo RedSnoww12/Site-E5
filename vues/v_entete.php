@@ -20,7 +20,7 @@
 <div class="w3-content" style="max-width:1500px">
 
 <!-- Header -->
-<header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
+<header class="w3-panel w3-center w3-opacity" style="padding:30px 16px">
   <h1 class="w3-xlarge">CONSERVATOIRE</h1>
   <h1>AMARA Sacha</h1>
   
