@@ -19,11 +19,19 @@ switch($action)
         include("vues/v_accueuil.php");
         break;
     case 'inscription':
-        // vue qui crée le contenu de la page d’accueil
+        // vue qui crée le contenu de la page inscription
         include("vues/v_inscription.php");
         break;
+    case 'inscriptionSucced':
+        try {
+            $monPdo->insertStudent()
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        include("vues/v_accueuil.php");
+        break;    
     case 'cours':
-        // vue qui crée le contenu de la page d’accueil
+
         $lesCours= $monPdo->getLesCours();
         //var_dump($lesCours);
         include("vues/v_cours.php");

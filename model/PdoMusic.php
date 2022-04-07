@@ -74,7 +74,8 @@ class PdoMusic{
 			$req = "Select person.nom, instrument.nom, jourDate, nbPlace, cours.id from cours
 			INNER JOIN professeur ON cours.idProf = professeur.id
 			INNER JOIN person ON professeur.id = person.id
-			INNER JOIN instrument ON cours.idInstrument = instrument.id;";
+			INNER JOIN instrument ON cours.idInstrument = instrument.id
+			WHERE nbPlace>0;";
 
 			//$monPdoMusic = PdoMusic::getPdoMusic();
 
@@ -97,8 +98,40 @@ class PdoMusic{
 
 	}
 
+
+    
+	public   function insertStudent($nom,$prenom,$adresse,$mail,$tel,$idCours){ 
+
+		try {
+		
+			$req = "insert into bd_zicmu.person (nom,prenom,adresse,mail,telephone) values ("+$nom+","+$prenom+","+$adresse+","+$mail+","+$tel+");";
+
+			//$monPdoMusic = PdoMusic::getPdoMusic();
+
+			//$rs = $monPdoMusic::getMonPdo()->prepare($req) ;
+
+			$rs = self::$monPdo->prepare($req) ;
+
+			$succed=$rs->execute() ;
+
+			if($succed){
+				$req = "update bd_zicmu.cours set bd_zicmu.coursnbPlace=";
+				
+			}
+			else{
+				throw new Exception("Error lors de l'inserstion du client");
+			}
+
+		} 
+		catch (PDOException $e) {
+		
+			echo 'Échec lors de la connexion : ' . $e->getMessage();
+
+		}
+
+
+	}
+
 }
-    
-    
     
   

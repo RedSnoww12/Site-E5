@@ -14,25 +14,24 @@
 ?>
 
 
-
 <div class="containerInscription">  
-  <form id="contact" action="" method="post">
+  <form id="contact" action="./index.php?action=inscriptionSucced&idCours=<?php echo $idCours?>" method="post">
     <h3>Inscription Cours</h3>
-    <h4>Contact us for custom quote</h4>
+    <h4>Inscription pour le cours : <?php echo $idCours?></h4>
     <fieldset>
-      <input placeholder="Your First Name" type="text" tabindex="1" required autofocus>
+      <input placeholder="Your First Name" type="text" name="nom" tabindex="1" required autofocus>
     </fieldset>
     <fieldset>
-      <input placeholder="Your Last Name" type="text" tabindex="2" required autofocus>
+      <input placeholder="Your Last Name" type="text" name="prenom" tabindex="2" required autofocus>
     </fieldset>
     <fieldset>
-      <input placeholder="Your Email Address" type="email" tabindex="3" required>
+      <input placeholder="Your Email Address" type="email" name="email" tabindex="3" required>
     </fieldset>
     <fieldset>
-      <input placeholder="Your Phone Number" type="tel" tabindex="4" required>
+      <input placeholder="Your Phone Number" type="tel" name="telephone" tabindex="4" required>
     </fieldset>
     <fieldset>
-      <input placeholder="Your Web Site (optional)" type="url" tabindex="5" required>
+      <input placeholder="Your Adresse" type="text" name="adresse" tabindex="5" required>
     </fieldset>
     <fieldset>
       <textarea placeholder="Type your message here...." tabindex="6" required></textarea>
@@ -40,7 +39,6 @@
     <fieldset>
       <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
     </fieldset>
-    <p class="copyright">Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a></p>
   </form>
 </div>
 
