@@ -26,7 +26,7 @@
             <td> <?php echo $cours[1]; ?></td>
             <td> <?php echo $cours[2]; ?></td>
             <td> <?php echo $cours[3]; ?></td>
-            <td><?php $idCours = $cours[4];?><a href="./index.php?action=inscription&idCours=<?php echo $idCours?>">Inscription</a></td>
+            <td><?php $idCours = $cours[4];?><a href="./index.php?action=formulaire&idCours=<?php echo $idCours?>">Inscription</a></td>
       </tr>
     <?php endforeach;?>
 		</tr>

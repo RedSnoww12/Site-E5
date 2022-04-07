@@ -26,9 +26,10 @@
   
   <div class="w3-padding-32">
     <div class="w3-bar w3-border">
-      <a href="./index.php?action=accueuil" class="w3-bar-item w3-button">Home</a>
+      <a href="./index.php?action=accueuil" class="w3-bar-item w3-button w3-light-grey">Home</a>
       <a href="./index.php?action=cours" class="w3-bar-item w3-button">Cours</a>
-      <a href="./index.php?action=inscription" class="w3-bar-item w3-button w3-light-grey">Inscription</a>
+      <a href="./index.php?action=formulaire" class="w3-bar-item w3-button">Formulaire</a>
+      <a href="./index.php?action=inscription" class="w3-bar-item w3-button">Inscription</a>
 
     </div>
   </div>

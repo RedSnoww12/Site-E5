@@ -18,15 +18,15 @@ switch($action)
         // vue qui crée le contenu de la page d’accueil
         include("vues/v_accueuil.php");
         break;
-    case 'inscription':
+    case 'formulaire':
         // vue qui crée le contenu de la page inscription
         include("vues/v_inscription.php");
         break;
     case 'inscriptionSucced':
         try {
-            $monPdo->insertStudent()
+            $monPdo->insertStudent();
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
         include("vues/v_accueuil.php");
         break;    
