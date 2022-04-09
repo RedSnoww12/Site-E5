@@ -34,7 +34,7 @@
       <input placeholder="Your Adresse" type="text" name="adresse" tabindex="5" required>
     </fieldset>
     <fieldset>
-      <textarea placeholder="Type your message here...." tabindex="6" required></textarea>
+      <textarea placeholder="Type your message here...." tabindex="6"></textarea>
     </fieldset>
     <fieldset>
       <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>

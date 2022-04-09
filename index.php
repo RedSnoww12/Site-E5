@@ -23,8 +23,14 @@ switch($action)
         include("vues/v_inscription.php");
         break;
     case 'inscriptionSucced':
+        $nom = $_POST['nom'];
+        $prenom = $_POST['prenom'];
+        $mail = $_POST['email'];
+        $telephone = $_POST['telephone'];
+        $adresse = $_POST['adresse'];
+        $idCours = $_GET['idCours'];
         try {
-            $monPdo->insertStudent();
+            $monPdo->insertStudent($nom,$prenom,$adresse,$mail,$telephone,$idCours);
         } catch (\Throwable $th) {
             throw $th;
         }

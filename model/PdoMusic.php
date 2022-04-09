@@ -104,7 +104,7 @@ class PdoMusic{
 
 		try {
 		
-			$req = "insert into bd_zicmu.person (nom,prenom,adresse,mail,telephone) values ("+$nom+","+$prenom+","+$adresse+","+$mail+","+$tel+");";
+			$req = "insert into bd_zicmu.person (nom,prenom,adresse,mail,telephone) values ('".$nom."','".$prenom."','".$adresse."','".$mail."','".$tel."');";
 
 			//$monPdoMusic = PdoMusic::getPdoMusic();
 
@@ -115,8 +115,10 @@ class PdoMusic{
 			$succed=$rs->execute() ;
 
 			if($succed){
-				$req = "update bd_zicmu.cours set bd_zicmu.coursnbPlace=";
-				
+				$req = "update bd_zicmu.cours set cours.nbPlace=cours.nbPlace-1 where cours.id='"+$idCours+"';";
+				$rs = self::$monPdo->prepare($req) ;
+
+				$succed=$rs->execute() ;
 			}
 			else{
 				throw new Exception("Error lors de l'inserstion du client");
@@ -125,6 +127,43 @@ class PdoMusic{
 		} 
 		catch (PDOException $e) {
 		
+			echo 'Échec lors de la connexion : ' . $e->getMessage();
+
+		}
+
+
+	}
+
+	public function getIdAdherent($unAdherent) {
+
+
+
+		try {
+
+			$nom =    $unAdherent->getNom() ;
+			$prenom =    $unAdherent->getPrenom() ;
+			$tel =    $unAdherent->getTel() ;       
+
+			$req = "SELECT idAdherent from Adherent where nomAdherent = '$nom' and prenomAdherent = '$prenom' and telAdherent = '$tel'  " ;
+
+			echo $req ;
+
+			$monPdoMusic = PdoMusic::getPdoMusic();
+
+			$rs = $monPdoMusic::getMonPdo()->prepare($req) ;
+
+			$rs->setFetchMode(PDO::FETCH_OBJ);
+
+			$rs->execute() ;
+
+			$monAdherent = $rs->fetch();
+
+
+			return $monAdherent->idAdherent;
+
+		} 
+		catch (PDOException $e) {
+
 			echo 'Échec lors de la connexion : ' . $e->getMessage();
 
 		}
