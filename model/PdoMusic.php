@@ -67,11 +67,18 @@ class PdoMusic{
 
 	public   function getLesCours(){ 
 
+
+		require_once("./model/Person.php");
+		require_once("./model/Teacher.php");
+		require_once("./model/Student.php");
+		require_once("./model/Instrument.php");
+		require_once("./model/Cours.php");
+		
 		try {
 		
-			$cours = array();
+			$LesCours = array();
 
-			$req = "Select person.nom, instrument.nom, jourDate, nbPlace, cours.id from cours
+			$req = "Select person.id as pId, person.nom as pNom, person.prenom as pPrenom, person.adresse as pAdresse, person.telephone as pTel, person.mail as pMail, instrument.nom as iNom, jourDate, nbPlace, cours.id as cId from cours
 			INNER JOIN professeur ON cours.idProf = professeur.id
 			INNER JOIN person ON professeur.id = person.id
 			INNER JOIN instrument ON cours.idInstrument = instrument.id
@@ -85,8 +92,12 @@ class PdoMusic{
 
 			$rs->execute() ;
 
-			$cours = $rs->fetchAll();
-			return $cours;
+			while ($donnees = $rs->fetch(PDO::FETCH_ASSOC)) {
+				$Teacher1 = new Teacher($donnees["pId"],$donnees["pNom"],$donnees["pPrenom"],$donnees["pAdresse"],$donnees["pTel"],$donnees["pMail"]);
+				$Instrument1 = new Instrument($donnees["iNom"]);
+				$LesCours[$donnees["cId"]] = new Cours($donnees["cId"], $Teacher1, $Instrument1, $donnees["jourDate"], $donnees["nbPlace"]);
+			}
+			return $LesCours;
 
 		} 
 		catch (PDOException $e) {
@@ -100,7 +111,7 @@ class PdoMusic{
 
 
     
-	public   function insertStudent($nom,$prenom,$adresse,$mail,$tel,$idCours){ 
+	public   function insertStudent($nom,$prenom,$adresse,$mail,$tel,$idCours,$lesCours){ 
 
 		try {
 		
@@ -112,11 +123,14 @@ class PdoMusic{
 
 			$rs = self::$monPdo->prepare($req) ;
 
-			$succed=$rs->execute() ;
+			$succed=$rs->execute();
 
 			if($succed){
-				$req = "update bd_zicmu.cours set cours.nbPlace=cours.nbPlace-1 where cours.id='"+$idCours+"';";
-				$rs = self::$monPdo->prepare($req) ;
+				$lesCours[$idCours]->nbPlaceDebit();
+				$newNbPlace = $lesCours[$idCours]->getNbPlace();
+
+				$req = "update bd_zicmu.cours set cours.nbPlace='$newNbPlace' where cours.id='$idCours';";
+				$rs = self::$monPdo->prepare($req);
 
 				$succed=$rs->execute() ;
 			}
@@ -146,11 +160,7 @@ class PdoMusic{
 
 			$req = "SELECT idAdherent from Adherent where nomAdherent = '$nom' and prenomAdherent = '$prenom' and telAdherent = '$tel'  " ;
 
-			echo $req ;
-
-			$monPdoMusic = PdoMusic::getPdoMusic();
-
-			$rs = $monPdoMusic::getMonPdo()->prepare($req) ;
+			$rs = self::$monPdo->prepare($req) ;
 
 			$rs->setFetchMode(PDO::FETCH_OBJ);
 
@@ -169,6 +179,94 @@ class PdoMusic{
 		}
 
 
+	}
+
+	public function getAdherent($unIdAdherent) {
+
+
+
+		try {
+
+
+
+			$req = "SELECT person.id, person.nom, person.prenom, person.telephone, person.adresse, person.mail, students.niveau from person
+			INNER JOIN students on person.id = students.id";
+
+
+			$monPdoMusic = PdoMusic::getPdoMusic();
+
+			$rs = $monPdoMusic::getMonPdo()->prepare($req) ;
+
+			$rs->setFetchMode(PDO::FETCH_OBJ);
+
+			$rs->execute() ;
+
+			$monAdherent = $rs->fetch();
+
+			$unAdherent = new Adherent($unIdAdherent,$monAdherent->nomAdherent,$monAdherent->prenomAdherent,$monAdherent->telAdherent ) ;
+
+			return $unAdherent;
+
+		} 
+		catch (PDOException $e) {
+
+			echo 'Échec lors de la connexion : ' . $e->getMessage();
+
+		}
+
+
+	}
+
+	public function selectStudents(){
+
+
+
+		$adherents = [];
+		$req = "SELECT person.id, person.nom, person.prenom, person.telephone, person.adresse, person.mail, students.niveau from person
+		INNER JOIN students on person.id = students.id";
+
+
+
+		$monPdoMusic = PdoMusic::getPdoMusic();
+
+		$requete = $monPdoMusic::getMonPdo()->prepare($req) ;
+
+		$requete->execute();
+
+		while ($donnees = $requete ->fetch(PDO::FETCH_ASSOC)) {
+
+			$adherents[] = new Adherent($donnees["idAdherent"],$donnees["nomAdherent"],$donnees["prenomAdherent"],$donnees["telAdherent"]);
+		}
+
+
+
+		return $adherents ;
+	}
+
+	public function selectCours(){
+    
+
+		$seances = [];
+		$req='SELECT * from seance';
+		
+		
+		
+		$monPdoMusic = PdoMusic::getPdoMusic();
+		
+		$requete = $monPdoMusic::getMonPdo()->prepare($req) ;
+		
+		$requete->execute();
+		
+		while ($donnees = $requete ->fetch(PDO::FETCH_ASSOC)) {
+			
+			$seances[$donnees["idSeance"]] = new Seance($donnees["idSeance"],$donnees["dateSeance"],$donnees["idInstrument"],$donnees["idProf"]);
+		}
+		
+		
+		
+		return $seances ;
+
+	
 	}
 
 }

@@ -7,34 +7,34 @@
 
 Class SeanceDAO{
     
- public function getSeance($unIdSeance) {
+    public function getSeance($unIdSeance) {
     
  
     
-     try {
-   
+        try {
+    
 
-$req = "Select * from seance where idSeance = $unIdSeance";
+            $req = "Select * from seance where idSeance = $unIdSeance";
 
-$monPdoMusic = PdoMusic::getPdoMusic();
+            $monPdoMusic = PdoMusic::getPdoMusic();
 
-$rs = $monPdoMusic::getMonPdo()->prepare($req) ;
+            $rs = $monPdoMusic::getMonPdo()->prepare($req) ;
 
-$rs->setFetchMode(PDO::FETCH_OBJ);
+            $rs->setFetchMode(PDO::FETCH_OBJ);
 
-$rs->execute() ;
+            $rs->execute() ;
 
-$maSeance = $rs->fetch();
+            $maSeance = $rs->fetch();
 
-$uneSeance = new Seance($maSeance->idSeance,$maSeance->dateSeance,$maSeance->idInstrument,$maSeance->idProf) ;
-return $uneSeance;
+            $uneSeance = new Seance($maSeance->idSeance,$maSeance->dateSeance,$maSeance->idInstrument,$maSeance->idProf) ;
+            return $uneSeance;
 
-} 
-catch (PDOException $e) {
-   
-    echo 'Échec lors de la connexion : ' . $e->getMessage();
+        } 
+        catch (PDOException $e) {
+        
+            echo 'Échec lors de la connexion : ' . $e->getMessage();
 
-}
+        }
 
 
     }
@@ -45,33 +45,30 @@ catch (PDOException $e) {
 
 
 
-public function select(){
+    public function select(){
     
-    require_once ("modele/class.pdomusic.inc.php"); 
-    require_once ("business/Seance.php"); 
+        require_once ("modele/class.pdomusic.inc.php"); 
+        require_once ("business/Seance.php"); 
 
- $seances = [];
- $req='
-SELECT * from seance'
-;
- 
+        $seances = [];
+        $req='SELECT * from seance';
+        
 
 
-$monPdoMusic = PdoMusic::getPdoMusic();
+        $monPdoMusic = PdoMusic::getPdoMusic();
 
-$requete = $monPdoMusic::getMonPdo()->prepare($req) ;
- 
-$requete->execute();
- 
- while ($donnees = $requete ->fetch(PDO::FETCH_ASSOC)) {
-     
- $seances[$donnees["idSeance"]] = new Seance($donnees["idSeance"],$donnees["dateSeance"],$donnees["idInstrument"],$donnees["idProf"]);
- }
- 
-   
- 
- return $seances ;
- }
+        $requete = $monPdoMusic::getMonPdo()->prepare($req) ;
+        
+        $requete->execute();
+        
+        while ($donnees = $requete ->fetch(PDO::FETCH_ASSOC)) {
+            $seances[$donnees["idSeance"]] = new Seance($donnees["idSeance"],$donnees["dateSeance"],$donnees["idInstrument"],$donnees["idProf"]);
+        }
+        
+        
+        
+        return $seances ;
+    }
 
 }
 

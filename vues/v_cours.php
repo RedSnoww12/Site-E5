@@ -5,6 +5,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./vues/css/styleTab.css">
+  <?php 
+    require_once("./model/Person.php");
+    require_once("./model/Teacher.php");
+    require_once("./model/Student.php");
+    require_once("./model/Instrument.php");
+    require_once("./model/Cours.php"); ?>
 </head>
 
 
@@ -22,11 +28,11 @@
   <?php 
     foreach ($lesCours as $cours) :?>
       <tr class="item_row">
-            <td> <?php echo $cours[0]; ?></td>
-            <td> <?php echo $cours[1]; ?></td>
-            <td> <?php echo $cours[2]; ?></td>
-            <td> <?php echo $cours[3]; ?></td>
-            <td><?php $idCours = $cours[4];?><a href="./index.php?action=formulaire&idCours=<?php echo $idCours?>">Inscription</a></td>
+            <td> <?php echo $cours->getPersonNom(); ?></td>
+            <td> <?php echo $cours->getInstrumentNom(); ?></td>
+            <td> <?php echo $cours->getDate(); ?></td>
+            <td> <?php echo $cours->getNbPlace(); ?></td>
+            <td><?php $idCours = $cours->getIdCours();?><a href="./index.php?action=formulaire&idCours=<?php echo $idCours?>">Inscription</a></td>
       </tr>
     <?php endforeach;?>
 		</tr>

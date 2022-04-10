@@ -88,7 +88,7 @@
 
 
 
-                $req = "SELECT nomAdherent, prenomAdherent,telAdherent from Adherent where idAdherent = $unIdAdherent" ;
+                $req = "SELECT nomAdherent, prenomAdherent,telAdherent from person where idAdherent = $unIdAdherent" ;
 
 
 
@@ -111,7 +111,7 @@
 
                 echo 'Échec lors de la connexion : ' . $e->getMessage();
 
-        }
+            }
 
 
         }  

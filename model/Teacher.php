@@ -3,14 +3,13 @@
     {
         private $salaire;
 
-        function __construct() {    }
-
-        function __construct($salaire) {
-            $this->$salaire = $salaire;
+        function __construct($idP, $nom, $prenom, $adresse, $tel, $mail, $salaire = 0) {
+            parent::__construct($idP, $nom, $prenom, $adresse, $tel, $mail);
+            $this->salaire = $salaire;
         }
 
         function __destruct() {
-            echo "The Teacher was {$this->nom}.";
+
         }
     }
     

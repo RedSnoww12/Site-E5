@@ -1,14 +1,15 @@
 <?php
+    include_once("./model/Person.php");
+    include_once("./model/Instrument.php");
+    include_once("./model/Teacher.php");
     class Cours
     {
-        private $prof = new Teacher();
-        private $instrument = new Instrument();
+        private $prof;
+        private $instrument;
         private $Date;
         private $nbPlace;
         private $idCours;
         private $listStudents = array();
-
-        function __construct() {    }
 
         function __construct($idCours,$prof, $instrument, $Date, $nbPlace) {
             $this->prof = $prof;
@@ -19,11 +20,30 @@
         }
 
         function __destruct() {
-            echo "The Teacher's cours was {$this->prof}.";
+
         }
 
+
         function nbPlaceDebit(){
-            $this->nbPlace = $nbPlace-1;
+            $this->nbPlace = $this->nbPlace-1;
+        }
+
+        function getInstrumentNom(){
+            return $this->instrument->getNom();
+        }
+
+        function getPersonNom(){
+            return $this->prof->getNom();
+        }
+
+        function getDate(){
+            return $this->Date;
+        }
+        function getNbPlace(){
+            return $this->nbPlace;
+        }
+        function getIdCours(){
+            return $this->idCours;
         }
     }
     

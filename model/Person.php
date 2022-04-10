@@ -1,24 +1,51 @@
 <?php
     class Person
     {
-        private $nom;
-        private $prenom;
-        private $adresse;
-        private $tel;
-        private $mail;
+        protected $idP;
+        protected $nom;
+        protected $prenom;
+        protected $adresse;
+        protected $tel;
+        protected $mail;
 
-        function __construct() {    }
-
-        function __construct($nom, $prenom, $adresse, $tel, $mail) {
-            $this->name = $name;
+        function __construct($idP, $nom, $prenom, $adresse, $tel, $mail) {
+            $this->nom = $nom;
             $this->prenom = $prenom;
             $this->adresse = $adresse;
             $this->tel = $tel;
             $this->mail = $mail;
+            $this->idP = $idP;
         }
 
         function __destruct() {
-            echo "The Person was {$this->nom}.";
+        }
+
+        public function setID($ID) {
+            $this->idP = $idP;
+        }
+          
+        public function getID() {
+            return $this->idP;
+        }
+
+        public function getNom() {
+            return $this->nom;
+        }
+
+        public function getPrenom() {
+            return $this->prenom;
+        }
+
+        public function getAdresse() {
+            return $this->adresse;
+        }
+
+        public function getTel() {
+            return $this->tel;
+        }
+
+        public function getMail() {
+            return $this->mail;
         }
     }
     
