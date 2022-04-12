@@ -18,7 +18,7 @@
             return $this->student->getNom();
         }
         function getPersonPrenom(){
-            return $this->student->getPreom();
+            return $this->student->getPrenom();
         }
 
         function getPayee(){
@@ -26,7 +26,7 @@
         }
 
         function getIdCours(){
-            return $this->cours:
+            return $this->cours;
         }
     }
     

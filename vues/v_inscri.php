@@ -17,22 +17,24 @@
 <table class="container">
 	<thead>
 		<tr>
-			<th><h1>Professeur</h1></th>
-			<th><h1>Instrument</h1></th>
-			<th><h1>Le jour, Date</h1></th>
-			<th><h1>Place</h1></th>
+			<th><h1>Nom</h1></th>
+			<th><h1>Prenom</h1></th>
+			<th><h1>Payé</h1></th>
+			<th><h1>Cours</h1></th>
 
 		</tr>
 	</thead>
 	<tbody>
   <?php 
-    foreach ($tableInscri as $inscri) :?>
+    foreach ($tableInscri as $studentI) :?>
+      <?php foreach ($studentI as $inscri) :?>
       <tr class="item_row">
             <td> <?php echo $inscri->getPersonNom(); ?></td>
             <td> <?php echo $inscri->getPersonPrenom(); ?></td>
             <td> <?php echo $inscri->getPayee(); ?></td>
             <td> <?php echo $inscri->getIdCours(); ?></td>
       </tr>
+      <?php endforeach;?>
     <?php endforeach;?>
 		</tr>
 	</tbody>

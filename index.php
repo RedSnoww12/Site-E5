@@ -1,10 +1,11 @@
 <?php
-    require_once("./model./PdoMusic.php");
+    require_once("./model/Inscription.php");
     require_once("./model/Person.php");
     require_once("./model/Teacher.php");
     require_once("./model/Student.php");
     require_once("./model/Instrument.php");
     require_once("./model/Cours.php");
+    require_once("./model./PdoMusic.php");
 
 $monPdo = PdoMusic::getPdoMusic();
 
@@ -56,7 +57,13 @@ switch($action)
         break;
 
     case 'inscription':
-        $tableInscri = $monPdo->selectLesInscri();
+        try{
+
+            $tableInscri = $monPdo->selectLesInscri();
+        }
+        catch (Exception $th) {
+            echo $th->getMessage();
+        }
         include("vues/v_inscri.php");
         break;
         

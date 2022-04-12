@@ -103,19 +103,18 @@ class PdoMusic{
 	}
 	
 	
-	public function getIdStudent(Student $unStudent) {
+	public function getIdStudent($nom,$prenom,$tel) {
 
 
 
 		try {
 
-			$nom =    $unStudent->getNom() ;
-			$prenom =    $unStudent->getPrenom() ;
-			$tel =    $unStudent->getTel() ;       
+			// $nom =    $unStudent->getNom() ;
+			// $prenom =    $unStudent->getPrenom() ;
+			// $tel =    $unStudent->getTel() ;       
 
-			$req = "SELECT students.id from bd_zicmu.students 
-			INNER JOIN person on students.id = person.id 
-			where person.nom = '$nom' and person.prenom = '$prenom' and person.telephone='$tel';" ;
+			$req = "SELECT students.id from bd_zicmu.students INNER JOIN person on students.id = person.id 
+			where person.nom ='$nom' and person.prenom ='$prenom' and person.telephone='$tel';" ;
 
 			$rs = self::$monPdo->prepare($req) ;
 
@@ -123,8 +122,43 @@ class PdoMusic{
 
 			$monIdStudent = $rs->fetch();
 			
-			echo($monIdStudent);
 			return $monIdStudent;
+
+		} 
+		catch(Exception $e){
+			echo 'Échec : ' . $e->getMessage();
+		}
+		catch (PDOException $e) {
+
+			echo 'Échec lors de la connexion : ' . $e->getMessage();
+
+		}
+
+
+	}
+    
+	public function getStudent($unIdStudent) {
+
+		try {
+
+			$req = "SELECT nom, prenom, adresse, telephone, mail, students.niveau as sLvl from person 
+			INNER JOIN students on person.id = students.id
+			where person.id = $unIdStudent;";
+
+
+			$monPdoMusic = PdoMusic::getPdoMusic();
+
+			$rs = $monPdoMusic::getMonPdo()->prepare($req) ;
+
+			$rs->setFetchMode(PDO::FETCH_OBJ);
+
+			$rs->execute() ;
+
+			$monStudent = $rs->fetch();
+
+			$monStudent = new Student($unIdStudent,$monStudent->nom,$monStudent->prenom, $monStudent->adresse, $monStudent->telephone, $monStudent->mail, $monStudent->sLvl) ;
+
+			return $monStudent;
 
 		} 
 		catch (PDOException $e) {
@@ -135,11 +169,36 @@ class PdoMusic{
 
 
 	}
-    
+
+	public function selectStudents(){
+
+
+		$students = [];
+		$req = "SELECT person.id as pID, person.nom as pNom, person.prenom as pPrenom, person.telephone as pTel, person.adresse as pAdresse, person.mail as pMail, students.niveau as sNiveau from person
+		INNER JOIN students on person.id = students.id;";
+
+
+
+		$rs = self::$monPdo->prepare($req) ;
+
+		$rs->execute();
+
+
+		while ($donnees = $rs->fetch(PDO::FETCH_ASSOC)) {
+
+			$students[$donnees["pID"]] = new Student($donnees["pID"],$donnees["pNom"],$donnees["pPrenom"],$donnees["pAdresse"], $donnees["pTel"], $donnees["pMail"],$donnees["sNiveau"]);
+		}
+
+
+
+		return $students ;
+	}
 	public   function insertStudent($nom,$prenom,$adresse,$mail,$tel,$idCours,$lesCours){ 
 
-		try {
-		
+		try {		
+			$nom=strtoupper($nom);
+			$prenom=strtoupper($prenom);
+
 			$req = "insert into bd_zicmu.person (nom,prenom,adresse,mail,telephone) values ('".$nom."','".$prenom."','".$adresse."','".$mail."','".$tel."');";
 
 			//$monPdoMusic = PdoMusic::getPdoMusic();
@@ -187,61 +246,6 @@ class PdoMusic{
 	}
 
 
-	public function getStudent($unIdStudent) {
-
-		try {
-
-			$req = "SELECT person.id, person.nom, person.prenom, person.telephone, person.adresse, person.mail, students.niveau from person
-			INNER JOIN students on person.id = students.id";
-
-
-			$monPdoMusic = PdoMusic::getPdoMusic();
-
-			$rs = $monPdoMusic::getMonPdo()->prepare($req) ;
-
-			$rs->setFetchMode(PDO::FETCH_OBJ);
-
-			$rs->execute() ;
-
-			$monStudent = $rs->fetch();
-
-			$monStudent = new Student($unIdStudent,$monStudent->nomAdherent,$monStudent->prenomAdherent,$monStudent->telAdherent ) ;
-
-			return $monStudent;
-
-		} 
-		catch (PDOException $e) {
-
-			echo 'Échec lors de la connexion : ' . $e->getMessage();
-
-		}
-
-
-	}
-
-	public function selectStudents(){
-
-
-		$students = [];
-		$req = "SELECT person.id as pID, person.nom as pNom, person.prenom as pPrenom, person.telephone as pTel, person.adresse as pAdresse, person.mail as pMail, students.niveau as sNiveau from person
-		INNER JOIN students on person.id = students.id;";
-
-
-
-		$rs = self::$monPdo->prepare($req) ;
-
-		$rs->execute();
-
-
-		while ($donnees = $rs->fetch(PDO::FETCH_ASSOC)) {
-
-			$students[$donnees["pID"]] = new Student($donnees["pID"],$donnees["pNom"],$donnees["pPrenom"],$donnees["pAdresse"], $donnees["pTel"], $donnees["pMail"],$donnees["sNiveau"]);
-		}
-
-
-
-		return $students ;
-	}
 
 
 	function selectLesInscri(){
@@ -250,10 +254,8 @@ class PdoMusic{
 
 			$inscri = [];
 	
-			$req = "SELECT person.id as pID, person.nom as pNom, person.prenom as pPrenom, person.telephone as pTel, person.adresse as pAdresse, person.mail as pMail, students.niveau as sNiveau, paye, cours.id as cID, 
-			from bd_zicmu.inscription
-			INNER JOIN students ON inscription.idStudent = students.id
-			INNER JOIN person ON students.id = person.id
+			$req = "SELECT students.id as sId, paye as payee, cours.id as cID from bd_zicmu.inscription 
+			INNER JOIN students ON inscription.idStudent = students.id 
 			INNER JOIN cours ON inscription.idCours = cours.id;";
 
 			$rs = self::$monPdo->prepare($req) ;
@@ -261,9 +263,13 @@ class PdoMusic{
 			$rs->execute() ;
 			
 			while ($donnees = $rs->fetch(PDO::FETCH_ASSOC)) {
-				$students = new Student($donnees["pID"],$donnees["pNom"],$donnees["pPrenom"],$donnees["pAdresse"], $donnees["pTel"], $donnees["pMail"],$donnees["sNiveau"]);
+
+				$unIdStudent = $donnees["sId"];
+				$student = $this->getStudent($unIdStudent);
+
 				$idCours = $donnees["cID"];
-				$inscri[] = new Inscription($students, $cID, 1);
+
+				$inscri[$unIdStudent][$idCours] = new Inscription($student, $idCours, 1);
 			}
 			return $inscri;
 		}
