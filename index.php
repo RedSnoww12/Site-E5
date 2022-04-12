@@ -54,6 +54,11 @@ switch($action)
 
         
         break;
+
+    case 'inscription':
+        $tableInscri = $monPdo->selectLesInscri();
+        include("vues/v_inscri.php");
+        break;
         
     default:
         include("vues/v_accueuil.php");
