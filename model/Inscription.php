@@ -21,6 +21,10 @@
             return $this->student->getPrenom();
         }
 
+        function getPersonID(){
+            return $this->student->getID();
+        }
+
         function getPayee(){
             return $this->payee;
         }

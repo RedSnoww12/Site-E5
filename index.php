@@ -67,6 +67,14 @@ switch($action)
         include("vues/v_inscri.php");
         break;
         
+    case "pdf":
+        $getIsStudent = $_GET["idStudent"];
+        $getIdCours = $_GET["idCours"];
+        $tableInscri = $monPdo->selectLesInscri();
+        include("./vues/v_pdf.php");
+        creerPdf($tableInscri[$getIsStudent][$getIdCours]);
+        break;
+
     default:
         include("vues/v_accueuil.php");
         break;

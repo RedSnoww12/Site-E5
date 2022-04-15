@@ -33,6 +33,7 @@
             <td> <?php echo $inscri->getPersonPrenom(); ?></td>
             <td> <?php echo $inscri->getPayee(); ?></td>
             <td> <?php echo $inscri->getIdCours(); ?></td>
+            <td><a href="./index.php?action=pdf&idStudent=<?php echo $inscri->getPersonID(); ?>&idCours=<?php echo $inscri->getIdCours(); ?>"</a>PDF</td>
       </tr>
       <?php endforeach;?>
     <?php endforeach;?>

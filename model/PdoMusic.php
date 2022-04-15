@@ -102,6 +102,43 @@ class PdoMusic{
 		
 	}
 	
+	public function getIdPerson($nom,$prenom,$tel) {
+
+
+
+		try {
+
+			// $nom =    $unStudent->getNom() ;
+			// $prenom =    $unStudent->getPrenom() ;
+			// $tel =    $unStudent->getTel() ;       
+
+			$req = "SELECT id from bd_zicmu.person
+			where person.nom ='$nom' and person.prenom ='$prenom' and person.telephone='$tel';" ;
+
+			$rs = self::$monPdo->prepare($req) ;
+
+			$rs->setFetchMode(PDO::FETCH_OBJ);
+
+			$rs->execute() ;
+
+			$monIdPerson = $rs->fetch();
+
+			return $monIdPerson->id;
+
+		} 
+		catch(Exception $e){
+			echo 'Échec : ' . $e->getMessage();
+		}
+		catch (PDOException $e) {
+
+			echo 'Échec lors de la connexion : ' . $e->getMessage();
+
+		}
+
+
+	}
+	
+	
 	
 	public function getIdStudent($nom,$prenom,$tel) {
 
@@ -118,11 +155,13 @@ class PdoMusic{
 
 			$rs = self::$monPdo->prepare($req) ;
 
+			$rs->setFetchMode(PDO::FETCH_OBJ);
+
 			$rs->execute() ;
 
 			$monIdStudent = $rs->fetch();
-			
-			return $monIdStudent;
+
+			return $monIdStudent->id;
 
 		} 
 		catch(Exception $e){
@@ -193,9 +232,11 @@ class PdoMusic{
 
 		return $students ;
 	}
+
 	public   function insertStudent($nom,$prenom,$adresse,$mail,$tel,$idCours,$lesCours){ 
 
-		try {		
+		try {
+			//creat student into person		
 			$nom=strtoupper($nom);
 			$prenom=strtoupper($prenom);
 
@@ -210,6 +251,16 @@ class PdoMusic{
 			$succed=$rs->execute();
 
 			if($succed){
+				//Get the last student creat into person and put him into student
+				$idPerson = $this->getIdPerson($nom,$prenom,$tel);
+
+				$req = "INSERT INTO bd_zicmu.students value ('$idPerson','1');";
+				$rs = self::$monPdo->prepare($req) ;
+
+				$succed=$rs->execute();
+
+
+				//if the inscription succed decrement nbplace of the cours where the student is insert
 				$lesCours[$idCours]->nbPlaceDebit();
 				$newNbPlace = $lesCours[$idCours]->getNbPlace();
 
@@ -220,9 +271,6 @@ class PdoMusic{
 
 				if ($succed) {
 					$idStudent = $this->getIdStudent($nom,$prenom,$tel);
-					echo($idCours);
-					echo($idStudent);
-
 					$req = "INSERT INTO bd_zicmu.inscription (idStudent, idCours) values ('$idStudent', '$idCours');";
 					$rs = self::$monPdo->prepare($req);
 					$succed=$rs->execute();
